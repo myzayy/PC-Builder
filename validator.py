@@ -2,7 +2,7 @@
 Compatibility check logic
 '''
 
-class PCBuild():
+class PCBuild:
     def __init__(self):
         self.cpu = None
         self.motherboard = None
@@ -16,15 +16,29 @@ class PCBuild():
         components = [self.cpu, self.ram, self.motherboard, self.gpu, self.psu]
         for item in components:
             if item:
-                if item == self.ram:
-                    total_price += float(item.price) * float(self.ram_count)
-                else:
-                    total_price += float(item.price)
+                total_price += float(item.price)
+            if self.ram and self.ram_count:
+                total_price += float(self.ram.price) * int(self.ram_count)
 
         return total_price
 
     def check_compatibility(self) -> list:
         errors = []
+        required_components = {
+            "Processor (CPU)": self.cpu,
+            "Motherboard": self.motherboard,
+            "RAM": self.ram,
+            "Graphics Card (GPU)": self.gpu,
+            "Power Supply (PSU)": self.psu
+        }
+
+        for name, item in required_components.items():
+            if not item:
+                errors.append(f"Warning! You haven't added a {name} to the current build!")
+
+        if errors:
+            errors.append("Further compatibility checks are blocked until all components are selected.")
+            return errors
 
         if self.cpu and self.motherboard:
             if self.cpu.socket != self.motherboard.socket:
@@ -51,7 +65,5 @@ class PCBuild():
                 errors.append(f"Memory types for RAM and motherboard do not match. "
                               f"Motherboard has {self.motherboard.ram_type}, "
                               f"RAM has {self.ram.ram_type}")
-
-
 
         return errors

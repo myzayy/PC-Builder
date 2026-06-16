@@ -2,7 +2,7 @@
 All component classes
 '''
 
-class Component():
+class Component:
     def __init__(self, name: str, price: float, power: int):
         self.name = name
         self.price = price
