@@ -1,3 +1,29 @@
 '''
 All component classes
 '''
+
+class Component():
+    def __init__(self, name: str, price: float, power: int):
+        self.name = name
+        self.price = price
+        self.power = power # consumption for parts, or power for the power supply
+
+class CPU(Component):
+    def __init__(self, name, price, power, socket: str):
+        super().__init__(name, price, power)
+        self.socket = socket
+
+class Motherboard(Component):
+    def __init__(self, name, price, power, socket: str, ram_type: str):
+        super().__init__(name, price, power)
+        self.socket = socket
+        self.ram_type = ram_type
+
+class GPU(Component):
+    def __init__(self, name, price, power):
+        super().__init__(name, price, power)
+
+class PSU(Component):
+    def __init__(self, name, price, power):
+        super().__init__(name, price, power) # ex. power = 750W
+

@@ -1,0 +1,35 @@
+{
+  "cpus": [
+    {"name": "Intel Core i5-13400F (4.6 GHz)", "price": 210, "power": 65, "socket": "LGA1700"},
+    {"name": "Intel Core i7-14700K (5.6 GHz)", "price": 420, "power": 125, "socket": "LGA1700"},
+    {"name": "AMD Ryzen 5 5600 (4.4 GHz)", "price": 135, "power": 65, "socket": "AM4"},
+    {"name": "AMD Ryzen 7 7700X (5.4 GHz)", "price": 310, "power": 105, "socket": "AM5"},
+    {"name": "AMD Ryzen 9 7950X (5.7 GHz)", "price": 550, "power": 170, "socket": "AM5"}
+  ],
+  "motherboards": [
+    {"name": "ASUS PRIME B760-PLUS", "price": 150, "power": 20, "socket": "LGA1700", "ram_type": "DDR5"},
+    {"name": "MSI PRO Z790-P", "price": 210, "power": 25, "socket": "LGA1700", "ram_type": "DDR4"},
+    {"name": "GIGABYTE B550 AORUS ELITE", "price": 130, "power": 15, "socket": "AM4", "ram_type": "DDR4"},
+    {"name": "ASRock B650 Pro RS", "price": 180, "power": 20, "socket": "AM5", "ram_type": "DDR5"},
+    {"name": "ROG STRIX X670E-F", "price": 380, "power": 30, "socket": "AM5", "ram_type": "DDR5"}
+  ],
+  "gpus": [
+    {"name": "Nvidia RTX 4060 (8GB VRAM)", "price": 300, "power": 115},
+    {"name": "Nvidia RTX 4070 Super (12GB VRAM)", "price": 620, "power": 220},
+    {"name": "Nvidia RTX 4080 (16GB VRAM)", "price": 1100, "power": 320},
+    {"name": "AMD Radeon RX 7600 (8GB VRAM)", "price": 270, "power": 165},
+    {"name": "AMD Radeon RX 7900 XTX (24GB VRAM)", "price": 950, "power": 355}
+  ],
+  "rams": [
+    {"name": "Kingston FURY Beast 16GB", "price": 60, "power": 5, "ram_type": "DDR4"},
+    {"name": "Corsair Vengeance LPX 32GB", "price": 90, "power": 7, "ram_type": "DDR4"},
+    {"name": "G.Skill Flare X5 32GB", "price": 115, "power": 8, "ram_type": "DDR5"},
+    {"name": "Crucial Pro 64GB", "price": 200, "power": 12, "ram_type": "DDR5"}
+  ],
+  "psus": [
+    {"name": "be quiet! Pure Power 11 600W", "price": 90, "power": 600},
+    {"name": "Deepcool PK750D 750W", "price": 75, "power": 750},
+    {"name": "Seasonic Focus 850W Gold", "price": 140, "power": 850},
+    {"name": "MSI MPG A1000G 1000W", "price": 180, "power": 1000}
+  ]
+}
