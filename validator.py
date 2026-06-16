@@ -1,0 +1,3 @@
+'''
+Compatibility check logic
+'''
