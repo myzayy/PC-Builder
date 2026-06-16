@@ -27,3 +27,7 @@ class PSU(Component):
     def __init__(self, name, price, power):
         super().__init__(name, price, power) # ex. power = 750W
 
+class RAM(Component):
+    def __init__(self, name, price, power, ram_type: str):
+        super().__init__(name, price, power)
+        self.ram_type = ram_type
