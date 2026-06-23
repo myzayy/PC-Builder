@@ -28,7 +28,7 @@ class PCBuild:
             "Processor (CPU)": self.cpu,
             "Motherboard": self.motherboard,
             "RAM": self.ram,
-            "Graphics Card (GPU)": self.gpu,
+            # "Graphics Card (GPU)": self.gpu,
             "Power Supply (PSU)": self.psu
         }
 
@@ -65,5 +65,8 @@ class PCBuild:
                 errors.append(f"Memory types for RAM and motherboard do not match. "
                               f"Motherboard has {self.motherboard.ram_type}, "
                               f"RAM has {self.ram.ram_type}")
+            if self.ram_count > self.motherboard.ram_slots:
+                errors.append(f"Too many RAM sticks has been added to build! "
+                              f"Chosen motherboard can contain only {self.motherboard.ram_slots} sticks of RAM.")
 
         return errors

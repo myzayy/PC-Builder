@@ -14,10 +14,11 @@ class CPU(Component):
         self.socket = socket
 
 class Motherboard(Component):
-    def __init__(self, name, price, power, socket: str, ram_type: str):
+    def __init__(self, name, price, power, socket: str, ram_type: str, ram_slots: int):
         super().__init__(name, price, power)
         self.socket = socket
         self.ram_type = ram_type
+        self.ram_slots = ram_slots
 
 class GPU(Component):
     def __init__(self, name, price, power):

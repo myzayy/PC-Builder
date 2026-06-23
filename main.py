@@ -44,7 +44,7 @@ def main():
         print(f"  • CPU: {build.cpu.name if build.cpu else 'Not selected'}")
         print(f"  • Motherboard: {build.motherboard.name if build.motherboard else 'Not selected'}")
         print(f"  • GPU: {build.gpu.name if build.gpu else 'Not selected'}")
-        print(f"  • RAM: {build.ram_count + "X \n\t\t\t" if build.ram_count else ""}"
+        print(f"  • RAM: {str(build.ram_count) + "X \n\t\t\t" if build.ram_count else ""}"
               f"{build.ram.name if build.ram else 'Not selected'}")
         print(f"  • PSUS: {build.psu.name if build.psu else 'Not selected'}")
         print(f"  Total price: ${build.calculate_total_price()}")
@@ -77,7 +77,7 @@ def main():
                 idx = int(input("Your choice: ")) - 1
                 if 0 <= idx < len(db["rams"]):
                     build.ram = db["rams"][idx]  # write object in build
-                    build.ram_count = input("Choose ram count(Enter to keep 1): ")
+                    build.ram_count = int(input("Choose ram count(Enter to keep 1): "))
 
             case "4":
                 show_menu(db["gpus"], "GPU Choose")

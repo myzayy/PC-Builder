@@ -7,11 +7,11 @@
     {"name": "AMD Ryzen 9 7950X (5.7 GHz)", "price": 550, "power": 170, "socket": "AM5"}
   ],
   "motherboards": [
-    {"name": "ASUS PRIME B760-PLUS", "price": 150, "power": 20, "socket": "LGA1700", "ram_type": "DDR5"},
-    {"name": "MSI PRO Z790-P", "price": 210, "power": 25, "socket": "LGA1700", "ram_type": "DDR4"},
-    {"name": "GIGABYTE B550 AORUS ELITE", "price": 130, "power": 15, "socket": "AM4", "ram_type": "DDR4"},
-    {"name": "ASRock B650 Pro RS", "price": 180, "power": 20, "socket": "AM5", "ram_type": "DDR5"},
-    {"name": "ROG STRIX X670E-F", "price": 380, "power": 30, "socket": "AM5", "ram_type": "DDR5"}
+    {"name": "ASUS PRIME B760-PLUS", "price": 150, "power": 20, "socket": "LGA1700", "ram_type": "DDR5", "ram_slots": 4},
+    {"name": "MSI PRO Z790-P", "price": 210, "power": 25, "socket": "LGA1700", "ram_type": "DDR4", "ram_slots": 4},
+    {"name": "GIGABYTE B550 AORUS ELITE", "price": 130, "power": 15, "socket": "AM4", "ram_type": "DDR4", "ram_slots": 4},
+    {"name": "ASRock B650 Pro RS", "price": 180, "power": 20, "socket": "AM5", "ram_type": "DDR5", "ram_slots": 4},
+    {"name": "ROG STRIX X670E-F", "price": 380, "power": 30, "socket": "AM5", "ram_type": "DDR5", "ram_slots": 4}
   ],
   "gpus": [
     {"name": "Nvidia RTX 4060 (8GB VRAM)", "price": 300, "power": 115},
