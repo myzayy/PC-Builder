@@ -1,10 +1,10 @@
 {
   "cpus": [
-    {"name": "Intel Core i5-13400F (4.6 GHz)", "price": 210, "power": 65, "socket": "LGA1700"},
-    {"name": "Intel Core i7-14700K (5.6 GHz)", "price": 420, "power": 125, "socket": "LGA1700"},
-    {"name": "AMD Ryzen 5 5600 (4.4 GHz)", "price": 135, "power": 65, "socket": "AM4"},
-    {"name": "AMD Ryzen 7 7700X (5.4 GHz)", "price": 310, "power": 105, "socket": "AM5"},
-    {"name": "AMD Ryzen 9 7950X (5.7 GHz)", "price": 550, "power": 170, "socket": "AM5"}
+    {"name": "Intel Core i5-13400F (4.6 GHz)", "price": 210, "power": 65, "socket": "LGA1700", "has_integrated_gpu": false},
+    {"name": "Intel Core i7-14700K (5.6 GHz)", "price": 420, "power": 125, "socket": "LGA1700", "has_integrated_gpu": true},
+    {"name": "AMD Ryzen 5 5600 (4.4 GHz)", "price": 135, "power": 65, "socket": "AM4", "has_integrated_gpu": false},
+    {"name": "AMD Ryzen 7 7700X (5.4 GHz)", "price": 310, "power": 105, "socket": "AM5", "has_integrated_gpu": true},
+    {"name": "AMD Ryzen 9 7950X (5.7 GHz)", "price": 550, "power": 170, "socket": "AM5", "has_integrated_gpu": true}
   ],
   "motherboards": [
     {"name": "ASUS PRIME B760-PLUS", "price": 150, "power": 20, "socket": "LGA1700", "ram_type": "DDR5", "ram_slots": 4},

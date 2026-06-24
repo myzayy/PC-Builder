@@ -44,7 +44,7 @@ def main():
         print(f"  • CPU: {build.cpu.name if build.cpu else 'Not selected'}")
         print(f"  • Motherboard: {build.motherboard.name if build.motherboard else 'Not selected'}")
         print(f"  • GPU: {build.gpu.name if build.gpu else 'Not selected'}")
-        print(f"  • RAM: {str(build.ram_count) + "X \n\t\t\t" if build.ram_count else ""}"
+        print(f"  • RAM: {str(build.ram_count) + "x \n\t\t\t" if build.ram_count else ""}"
               f"{build.ram.name if build.ram else 'Not selected'}")
         print(f"  • PSUS: {build.psu.name if build.psu else 'Not selected'}")
         print(f"  Total price: ${build.calculate_total_price()}")
@@ -52,10 +52,11 @@ def main():
 
         print("1. Choose CPU")
         print("2. Choose Motherboard")
-        print("3. Choose RAM")
-        print("4. Choose GPU")
+        print("3. Choose GPU")
+        print("4. Choose RAM")
         print("5. Choose PSUS")
         print("6. Check compatibility")
+        print("7. Save build to file")
         print("\n0. Exit")
 
         choice = input("\nChoose option: ")
@@ -73,17 +74,47 @@ def main():
                 if 0 <= idx < len(db["motherboards"]):
                     build.motherboard = db["motherboards"][idx] # write object in build
             case "3":
+                show_menu(db["gpus"], "GPU Choose")
+                print("Type 'del' or 'delete' to remove the current gpu from your build.")
+
+                user_input = input("Your choice: ").strip().lower()
+
+                if user_input in ["del", "delete"]:
+                    build.gpu = None
+                    print("\nGpu has been removed from your build.")
+                    input("\nPress enter to continue...")
+                elif user_input == "0":
+                    print("\nReturning to main menu.")
+                else:
+                    try:
+                        idx = int(user_input) - 1
+                        if 0 <= idx < len(db["gpus"]):
+                            build.gpu = db["gpus"][idx]  # write object in build
+                        else:
+                            print("Error! Invalid component number.")
+                            input("Press Enter to continue...")
+                    except ValueError:
+                        print("Invalid input! Please enter number from list "
+                              "or type 'del' or 'delete' to delete item.")
+                        input("Press Enter to continue...")
+
+            case "4":
                 show_menu(db["rams"], "RAM Choose")
                 idx = int(input("Your choice: ")) - 1
                 if 0 <= idx < len(db["rams"]):
                     build.ram = db["rams"][idx]  # write object in build
-                    build.ram_count = int(input("Choose ram count(Enter to keep 1): "))
+                    while True:
+                        ram_input = input("Choose ram count (1-4): ")
 
-            case "4":
-                show_menu(db["gpus"], "GPU Choose")
-                idx = int(input("Your choice: ")) - 1
-                if 0 <= idx < len(db["gpus"]):
-                    build.gpu = db["gpus"][idx]  # write object in build
+                        try:
+                            count = int(ram_input)
+                            if 1 <= count <= 4:
+                                build.ram_count = count
+                                break
+                            else:
+                                print("Error! You can only choose between 1 and 4 sticks.")
+                        except ValueError:
+                            print("Invalid input! Please enter a valid number (1-4).")
             case "5":
                 show_menu(db["psus"], "PSUS Choose")
                 idx = int(input("Your choice: ")) - 1
@@ -98,6 +129,13 @@ def main():
                     for error in errors:
                         print(error)
                 input("\nPress Enter to continue...")
+            case "7":
+                if build.export_to_txt():
+                    print("\n[SUCCESS] Your build has been successfully saved to .txt file.")
+                    input("\nPress Enter to continue...")
+                else:
+                    print("\n[ERROR] Cannot export! Your build still has compatibility errors. Fix them first.")
+                    input("\nPress Enter to continue...")
             case "0":
                 print("\nGoodbye!")
                 break

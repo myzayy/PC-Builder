@@ -9,9 +9,10 @@ class Component:
         self.power = power # consumption for parts, or power for the power supply
 
 class CPU(Component):
-    def __init__(self, name, price, power, socket: str):
+    def __init__(self, name, price, power, socket: str, has_integrated_gpu: bool):
         super().__init__(name, price, power)
         self.socket = socket
+        self.has_integrated_gpu = has_integrated_gpu
 
 class Motherboard(Component):
     def __init__(self, name, price, power, socket: str, ram_type: str, ram_slots: int):
