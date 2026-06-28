@@ -1,6 +1,6 @@
-'''
+"""
 All component classes
-'''
+"""
 
 class Component:
     def __init__(self, name: str, price: float, power: int):
