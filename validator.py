@@ -1,6 +1,6 @@
-'''
+"""
 Compatibility check logic
-'''
+"""
 
 class PCBuild:
     def __init__(self):
@@ -13,12 +13,13 @@ class PCBuild:
 
     def calculate_total_price(self) -> float:
         total_price = 0
-        components = [self.cpu, self.ram, self.motherboard, self.gpu, self.psu]
+        components = [self.cpu, self.motherboard, self.gpu, self.psu]
         for item in components:
             if item:
                 total_price += float(item.price)
-            if self.ram and self.ram_count:
-                total_price += float(self.ram.price) * int(self.ram_count)
+
+        if self.ram and self.ram_count:
+            total_price += float(self.ram.price) * int(self.ram_count)
 
         return total_price
 
@@ -70,7 +71,7 @@ class PCBuild:
                 errors.append(f"Memory types for RAM and motherboard do not match. "
                               f"Motherboard has {self.motherboard.ram_type}, "
                               f"RAM has {self.ram.ram_type}")
-            if int(self.ram_count) > self.motherboard.ram_slots:
+            if self.ram_count and int(self.ram_count) > self.motherboard.ram_slots:
                 errors.append(f"Too many RAM sticks has been added to build! "
                               f"Chosen motherboard can contain only {self.motherboard.ram_slots} sticks of RAM.")
 
