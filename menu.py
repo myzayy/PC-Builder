@@ -30,6 +30,9 @@ class Menu:
         print(f"  • RAM: {str(build.ram_count) + "x " if build.ram_count else ""}"
               f"{build.ram.name if build.ram else 'Not selected'}")
         print(f"  • PSUS: {build.psu.name if build.psu else 'Not selected'}")
+        print(f"  • Storage: {build.storage.name if build.storage else 'Not selected'}")
+        print(f"  • CPU Cooler: {build.cpu_cooler.name if build.cpu_cooler else 'Not selected'}")
+        print(f"  • Case: {build.case.name if build.case else 'Not selected'}")
         print(f"  Total price: ${build.calculate_total_price()}")
         print("------------------------------------")
 
@@ -38,8 +41,11 @@ class Menu:
         print("3. Choose GPU")
         print("4. Choose RAM")
         print("5. Choose PSUS")
-        print("6. Check compatibility")
-        print("7. Save build to file")
+        print("6. Choose Storage")
+        print("7. Choose CPU Cooler")
+        print("8. Choose Case\n")
+        print("9. Check compatibility")
+        print("10. Save build to file")
         print("\n0. Exit")
 
     def get_user_choice(self, element: str, options_list: list):
@@ -98,6 +104,16 @@ class Menu:
                 self.show_menu(self.db["psus"], "PSUS Choose")
                 self.get_user_choice("psu", self.db["psus"])
             case "6":
+                self.show_menu(self.db["storages"], "Storage Choose")
+                self.get_user_choice("storage", self.db["storages"])
+            case "7":
+                self.show_menu(self.db["coolers"], "CPU Cooler Choose")
+                self.get_user_choice("cpu_cooler", self.db["coolers"])
+            case "8":
+                self.show_menu(self.db["cases"], "Case Choose")
+                self.get_user_choice("case", self.db["cases"])
+
+            case "9":
                 errors = self.build.check_compatibility()
                 if not errors:
                     print("\nGreat choice! Your build fully compatible!")
@@ -106,7 +122,7 @@ class Menu:
                     for error in errors:
                         print(error)
                 input("\nPress Enter to continue...")
-            case "7":
+            case "10":
                 if self.build.export_to_txt():
                     print("\n[SUCCESS] Your build has been successfully saved to .txt file.")
                     input("\nPress Enter to continue...")

@@ -5,7 +5,7 @@ Entry point
 import json
 
 from menu import Menu
-from models import CPU, Motherboard, GPU, PSU, RAM
+from models import CPU, Motherboard, GPU, PSU, RAM, CPUCooler, Case, Storage
 from validator import PCBuild
 
 def load_database(filename="database.json") -> dict:
@@ -19,7 +19,10 @@ def load_database(filename="database.json") -> dict:
         "motherboards": [Motherboard(**item) for item in data["motherboards"]],
         "rams": [RAM(**item) for item in data["rams"]],
         "gpus": [GPU(**item) for item in data["gpus"]],
-        "psus": [PSU(**item) for item in data["psus"]]
+        "psus": [PSU(**item) for item in data["psus"]],
+        "coolers": [CPUCooler(**item) for item in data["coolers"]],
+        "cases": [Case(**item) for item in data["cases"]],
+        "storages": [Storage(**item) for item in data["storages"]]
     }
     return db
 
