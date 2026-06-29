@@ -1,24 +1,25 @@
 {
   "cpus": [
-    {"name": "Intel Core i5-13400F (4.6 GHz)", "price": 210, "power": 65, "socket": "LGA1700", "has_integrated_gpu": false},
-    {"name": "Intel Core i7-14700K (5.6 GHz)", "price": 420, "power": 125, "socket": "LGA1700", "has_integrated_gpu": true},
-    {"name": "AMD Ryzen 5 5600 (4.4 GHz)", "price": 135, "power": 65, "socket": "AM4", "has_integrated_gpu": false},
-    {"name": "AMD Ryzen 7 7700X (5.4 GHz)", "price": 310, "power": 105, "socket": "AM5", "has_integrated_gpu": true},
-    {"name": "AMD Ryzen 9 7950X (5.7 GHz)", "price": 550, "power": 170, "socket": "AM5", "has_integrated_gpu": true}
+    {"name": "Intel Core i5-13400F (4.6 GHz)", "price": 210, "power": 65, "socket": "LGA1700", "integrated_gpu": false, "included_cooler": true},
+    {"name": "Intel Core i7-14700K (5.6 GHz)", "price": 420, "power": 125, "socket": "LGA1700", "integrated_gpu": true, "included_cooler": false},
+    {"name": "AMD Ryzen 5 5600 (4.4 GHz)", "price": 135, "power": 65, "socket": "AM4", "integrated_gpu": false, "included_cooler": true},
+    {"name": "AMD Ryzen 7 7700X (5.4 GHz)", "price": 310, "power": 105, "socket": "AM5", "integrated_gpu": true, "included_cooler": false},
+    {"name": "AMD Ryzen 9 7950X (5.7 GHz)", "price": 550, "power": 170, "socket": "AM5", "integrated_gpu": true, "included_cooler": false}
   ],
   "motherboards": [
-    {"name": "ASUS PRIME B760-PLUS", "price": 150, "power": 20, "socket": "LGA1700", "ram_type": "DDR5", "ram_slots": 4},
-    {"name": "MSI PRO Z790-P", "price": 210, "power": 25, "socket": "LGA1700", "ram_type": "DDR4", "ram_slots": 4},
-    {"name": "GIGABYTE B550 AORUS ELITE", "price": 130, "power": 15, "socket": "AM4", "ram_type": "DDR4", "ram_slots": 4},
-    {"name": "ASRock B650 Pro RS", "price": 180, "power": 20, "socket": "AM5", "ram_type": "DDR5", "ram_slots": 4},
-    {"name": "ROG STRIX X670E-F", "price": 380, "power": 30, "socket": "AM5", "ram_type": "DDR5", "ram_slots": 4}
+    {"name": "ASUS PRIME B760-PLUS", "price": 150, "power": 20, "socket": "LGA1700", "ram_type": "DDR5", "ram_slots": 4, "form_factor": "ATX"},
+    {"name": "MSI PRO Z790-P", "price": 210, "power": 25, "socket": "LGA1700", "ram_type": "DDR4", "ram_slots": 4, "form_factor": "ATX"},
+    {"name": "GIGABYTE B550 AORUS ELITE", "price": 130, "power": 15, "socket": "AM4", "ram_type": "DDR4", "ram_slots": 4, "form_factor": "ATX"},
+    {"name": "ASRock B650 Pro RS", "price": 180, "power": 20, "socket": "AM5", "ram_type": "DDR5", "ram_slots": 4, "form_factor": "ATX"},
+    {"name": "ROG STRIX X670E-F", "price": 380, "power": 30, "socket": "AM5", "ram_type": "DDR5", "ram_slots": 4, "form_factor": "ATX"},
+    {"name": "ASUS ROG STRIX B650-I GAMING", "price": 240, "power": 15, "socket": "AM5", "ram_type": "DDR5", "ram_slots": 2, "form_factor": "Mini-ITX"}
   ],
   "gpus": [
-    {"name": "Nvidia RTX 4060 (8GB VRAM)", "price": 300, "power": 115},
-    {"name": "Nvidia RTX 4070 Super (12GB VRAM)", "price": 620, "power": 220},
-    {"name": "Nvidia RTX 4080 (16GB VRAM)", "price": 1100, "power": 320},
-    {"name": "AMD Radeon RX 7600 (8GB VRAM)", "price": 270, "power": 165},
-    {"name": "AMD Radeon RX 7900 XTX (24GB VRAM)", "price": 950, "power": 355}
+    {"name": "Nvidia RTX 4060 (8GB VRAM)", "price": 300, "power": 115, "length": 240},
+    {"name": "Nvidia RTX 4070 Super (12GB VRAM)", "price": 620, "power": 220, "length": 267},
+    {"name": "Nvidia RTX 4080 (16GB VRAM)", "price": 1100, "power": 320, "length": 342},
+    {"name": "AMD Radeon RX 7600 (8GB VRAM)", "price": 270, "power": 165, "length": 205},
+    {"name": "AMD Radeon RX 7900 XTX (24GB VRAM)", "price": 950, "power": 355, "length": 320}
   ],
   "rams": [
     {"name": "Kingston FURY Beast 16GB", "price": 60, "power": 5, "ram_type": "DDR4"},
@@ -31,5 +32,23 @@
     {"name": "Deepcool PK750D 750W", "price": 75, "power": 750},
     {"name": "Seasonic Focus 850W Gold", "price": 140, "power": 850},
     {"name": "MSI MPG A1000G 1000W", "price": 180, "power": 1000}
+  ],
+  "coolers": [
+    {"name": "ID-COOLING SE-224-XTS", "price": 25, "power": 5, "height": 151, "sockets": ["LGA1700", "AM4", "AM5"]},
+    {"name": "be quiet! Dark Rock Pro 5", "price": 95, "power": 8, "height": 168, "sockets": ["LGA1700", "AM4", "AM5"]},
+    {"name": "Noctua NH-D15 chromax.black", "price": 120, "power": 10, "height": 165, "sockets": ["LGA1700", "AM4"]},
+    {"name": "Thermalright Assassin King 120 SE", "price": 30, "power": 4, "height": 148, "sockets": ["LGA1700", "AM4", "AM5"]}
+  ],
+  "cases": [
+    {"name": "Zalman i3 Neo Black", "price": 65, "max_gpu_length": 355, "max_cpu_cooler_height": 160, "supported_form_factors": ["ATX", "Micro-ATX", "Mini-ITX"]},
+    {"name": "Corsair 4000D Airflow", "price": 105, "max_gpu_length": 360, "max_cpu_cooler_height": 170, "supported_form_factors": ["ATX", "Micro-ATX", "Mini-ITX"]},
+    {"name": "NZXT H5 Flow", "price": 95, "max_gpu_length": 365, "max_cpu_cooler_height": 165, "supported_form_factors": ["ATX", "Micro-ATX", "Mini-ITX"]},
+    {"name": "LIAN LI O11 Dynamic MINI", "price": 130, "max_gpu_length": 395, "max_cpu_cooler_height": 170, "supported_form_factors": ["Micro-ATX", "Mini-ITX"]},
+    {"name": "Fractal Design Terra", "price": 180, "max_gpu_length": 322, "max_cpu_cooler_height": 77, "supported_form_factors": ["Mini-ITX"]}
+  ],
+  "storages": [
+    {"name": "Kingston NV2 1TB M.2 NVMe", "price": 65, "power": 3},
+    {"name": "Samsung 990 Pro 2TB M.2 NVMe", "price": 180, "power": 6},
+    {"name": "Crucial MX500 1TB 2.5 SATA", "price": 80, "power": 4}
   ]
 }
