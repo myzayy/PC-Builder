@@ -14,7 +14,6 @@ class PCBuild:
         self.cpu_cooler = None
         self.case = None
 
-
     def calculate_total_price(self) -> float:
         total_price = 0
         components = [self.cpu, self.motherboard, self.gpu, self.psu, self.storage, self.cpu_cooler, self.case]
@@ -29,6 +28,23 @@ class PCBuild:
 
     def check_compatibility(self) -> list:
         errors = []
+
+        self._validate_presence(errors)
+
+        if errors:
+            errors.append("Further compatibility checks are blocked until all components are selected.")
+            return errors
+
+        self._validate_gpu_and_cooling_necessity(errors)
+        self._validate_sockets_and_slots(errors)
+        self._validate_case_dimensions(errors)
+        self._validate_power_supply(errors)
+        self._validate_ram_compatibility(errors)
+
+
+        return errors
+
+    def _validate_presence(self, errors: list):
         required_components = {
             "Processor (CPU)": self.cpu,
             "Motherboard": self.motherboard,
@@ -42,10 +58,7 @@ class PCBuild:
             if not item:
                 errors.append(f"Warning! You haven't added a {name} to the current build!")
 
-        if errors:
-            errors.append("Further compatibility checks are blocked until all components are selected.")
-            return errors
-
+    def _validate_gpu_and_cooling_necessity(self, errors: list):
         if self.cpu and not self.cpu.integrated_gpu and not self.gpu:
             errors.append(f"No graphics output! Your GPU is missing "
                           f"and the selected CPU does not have integrated graphics. "
@@ -55,6 +68,7 @@ class PCBuild:
                           f"and the selected CPU does not have included cooler. "
                           f"Please add CPU cooler or change your CPU. ")
 
+    def _validate_sockets_and_slots(self, errors: list):
         if self.cpu and self.motherboard:
             if self.cpu.socket != self.motherboard.socket:
                 errors.append(
@@ -68,43 +82,52 @@ class PCBuild:
                     f"Cooler doesn't fit! The Motherboard has {self.motherboard.socket}, "
                     f"cooler only works at - {sockets_text} sockets. "
                 )
+
+    def _validate_case_dimensions(self, errors: list):
         # Compatibility to fit components in case
-        if self.case:
-            if self.motherboard:
-                if self.motherboard.form_factor not in self.case.supported_form_factors:
-                    errors.append("Motherboard form factor doesn't fit in chosen case! ")
-            if self.gpu:
-                if self.gpu.length > self.case.max_gpu_length:
-                    errors.append("Your GPU is too long to fit in chosen case! ")
-            if self.cpu_cooler:
-                if self.cpu_cooler.height > self.case.max_cpu_cooler_height:
-                    errors.append("Your CPU Cooler is too high to fit in chosen case! ")
-        if self.psu:
-            total_consumption = 0
-            for comp in [self.cpu, self.motherboard, self.gpu, self.storage, self.cpu_cooler]:
-                if comp:
-                    total_consumption += comp.power
-            if self.ram and self.ram_count:
-                total_consumption += self.ram.power * int(self.ram_count)
+        if not self.case:
+            return
 
-            recommended_power = total_consumption * 1.2
+        if self.motherboard:
+            if self.motherboard.form_factor not in self.case.supported_form_factors:
+                errors.append("Motherboard form factor doesn't fit in chosen case! ")
+        if self.gpu:
+            if self.gpu.length > self.case.max_gpu_length:
+                errors.append("Your GPU is too long to fit in chosen case! ")
+        if self.cpu_cooler:
+            if self.cpu_cooler.height > self.case.max_cpu_cooler_height:
+                errors.append("Your CPU Cooler is too high to fit in chosen case! ")
 
-            if self.psu.power < recommended_power:
-                errors.append(
-                    f"Weak power supply unit! Your system consumes approx {total_consumption}W, "
-                    f"recommended power is {int(recommended_power)}W, chosen PSU has only {self.psu.power}W."
-                )
+    def _validate_power_supply(self, errors: list):
 
-        if self.ram and self.motherboard:
-            if self.ram.ram_type != self.motherboard.ram_type:
-                errors.append(f"Memory types for RAM and motherboard do not match. "
-                              f"Motherboard has {self.motherboard.ram_type}, "
-                              f"RAM has {self.ram.ram_type}")
-            if self.ram_count and int(self.ram_count) > self.motherboard.ram_slots:
-                errors.append(f"Too many RAM sticks has been added to build! "
-                              f"Chosen motherboard can contain only {self.motherboard.ram_slots} sticks of RAM.")
+        if not self.psu:
+            return
 
-        return errors
+        total_consumption = 0
+        for comp in [self.cpu, self.motherboard, self.gpu, self.storage, self.cpu_cooler]:
+            if comp:
+                total_consumption += comp.power
+        if self.ram and self.ram_count:
+            total_consumption += self.ram.power * int(self.ram_count)
+
+        recommended_power = total_consumption * 1.2
+
+        if self.psu.power < recommended_power:
+            errors.append(
+                f"Weak power supply unit! Your system consumes approx {total_consumption}W, "
+                f"recommended power is {int(recommended_power)}W, chosen PSU has only {self.psu.power}W."
+            )
+
+    def _validate_ram_compatibility(self, errors:list):
+        if not (self.ram and self.motherboard):
+            return
+        if self.ram.ram_type != self.motherboard.ram_type:
+            errors.append(f"Memory types for RAM and motherboard do not match. "
+                          f"Motherboard has {self.motherboard.ram_type}, "
+                          f"RAM has {self.ram.ram_type}")
+        if self.ram_count and int(self.ram_count) > self.motherboard.ram_slots:
+            errors.append(f"Too many RAM sticks has been added to build! "
+                          f"Chosen motherboard can contain only {self.motherboard.ram_slots} sticks of RAM.")
 
     def export_to_txt(self, filename="pc_build.txt"):
         if self.check_compatibility():
