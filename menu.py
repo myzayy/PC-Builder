@@ -1,15 +1,30 @@
 """
 Menu: print and actions
 """
+import os
 
 class Menu:
     def __init__(self, build, db):
         self.build = build
         self.db = db
+        self.component_map = {
+            "1": ("cpu", "cpus", "CPU Selection"),
+            "2": ("motherboard", "motherboards", "Motherboard Selection"),
+            "3": ("gpu", "gpus", "Gpu Selection"),
+            # RAM logic separated because of choose count logic
+            "5": ("psu", "psus", "Power Supply Selection"),
+            "6": ("storage", "storages", "Storage Selection"),
+            "7": ("cpu_cooler", "coolers", "CPU Cooler Selection"),
+            "8": ("case", "cases", "Case Selection")
+        }
+    @staticmethod
+    def clear_screen():
+        os.system('cls' if os.name == 'nt' else 'clear')
 
     @staticmethod
     def show_menu(options: list, title: str):
         # Function to print components or actions
+        Menu.clear_screen()
         print(f"\n==={title}===")
         for i, option in enumerate(options, 1):
             if hasattr(option, 'name'):
@@ -19,6 +34,7 @@ class Menu:
         print("\n0. Back / Exit")
 
     def print_current_build(self):
+        Menu.clear_screen()
         build = self.build
         print("\n====================================")
         print("💻 PC Builder (CONSOLE VERSION)")
@@ -27,8 +43,10 @@ class Menu:
         print(f"  • CPU: {build.cpu.name if build.cpu else 'Not selected'}")
         print(f"  • Motherboard: {build.motherboard.name if build.motherboard else 'Not selected'}")
         print(f"  • GPU: {build.gpu.name if build.gpu else 'Not selected'}")
-        print(f"  • RAM: {str(build.ram_count) + "x " if build.ram_count else ""}"
-              f"{build.ram.name if build.ram else 'Not selected'}")
+
+        ram_prefix = f"{build.ram_count}x " if build.ram_count else ""
+        print(f"  • RAM: {ram_prefix}{build.ram.name if build.ram else 'Not selected'}")
+
         print(f"  • PSUS: {build.psu.name if build.psu else 'Not selected'}")
         print(f"  • Storage: {build.storage.name if build.storage else 'Not selected'}")
         print(f"  • CPU Cooler: {build.cpu_cooler.name if build.cpu_cooler else 'Not selected'}")
@@ -36,53 +54,43 @@ class Menu:
         print(f"  Total price: ${build.calculate_total_price()}")
         print("------------------------------------")
 
-        print("1. Choose CPU")
-        print("2. Choose Motherboard")
-        print("3. Choose GPU")
-        print("4. Choose RAM")
-        print("5. Choose PSUS")
-        print("6. Choose Storage")
-        print("7. Choose CPU Cooler")
-        print("8. Choose Case\n")
-        print("9. Check compatibility")
-        print("10. Save build to file")
-        print("\n0. Exit")
+        print("1. Choose CPU \n2. Choose Motherboard \n3. Choose GPU \n4. Choose RAM \n5. Choose PSUS \n"
+              "6. Choose Storage \n7. Choose CPU Cooler \n8. Choose Case ")
+
+        print("------------------------------------")
+        print("9. Check compatibility \n10. Save build to file \n")
+        print("0.Exit")
 
     def get_user_choice(self, element: str, options_list: list):
         while True:
-            print(f"Tip: Type 'del' or 'delete' to remove the current {element} from your build.")
+            print(f"\nTip: Type 'del' or 'delete' to remove the current {element} from your build.")
             user_input = input("Your choice: ").strip().lower()
             if user_input == "0":
                 return True
             if user_input in ["del", "delete"]:
                 setattr(self.build, element, None)
-                print(f"\n{element.capitalize()} has been removed from your build.")
-                input("\nPress enter to continue...")
+                print(f"\n[INFO] {element.replace('_', ' ').capitalize()} has been removed.")
+                input("\nPress Enter to continue...")
                 return True
             try:
                 idx = int(user_input) - 1
                 if 0 <= idx < len(options_list):
                     setattr(self.build, element, options_list[idx])
                     return True
-                else:
-                    print("Error! Invalid component number.")
-                    input("Press enter to continue...")
+                print("❌ Error! Invalid component number.")
             except ValueError:
-                print("Invalid input! Please enter a number.")
-                input("Press enter to continue...")
+                print("⚠️ Invalid input! Please enter a number.")
+            input("Press Enter to continue...")
 
     def handle_choice(self, choice):
-        match choice:
-            case "1":
-                self.show_menu(self.db["cpus"], "CPU Choose")
-                self.get_user_choice("cpu", self.db["cpus"])
 
-            case "2":
-                self.show_menu(self.db["motherboards"], "Motherboards Choose")
-                self.get_user_choice("motherboard", self.db["motherboards"])
-            case "3":
-                self.show_menu(self.db["gpus"], "GPU Choose")
-                self.get_user_choice("gpu", self.db["gpus"])
+        if choice in self.component_map:
+            attr_name, db_key, title = self.component_map[choice]
+            self.show_menu(self.db[db_key], title)
+            self.get_user_choice(attr_name, self.db[db_key])
+            return True
+
+        match choice:
             case "4":
                 self.show_menu(self.db["rams"], "RAM Choose")
                 self.get_user_choice("ram", self.db["rams"])
@@ -95,45 +103,34 @@ class Menu:
                                 self.build.ram_count = count
                                 break
                             else:
-                                print("Error! You can only choose between 1 and 4 sticks.")
+                                print("⚠️ Error! You can only choose between 1 and 4 sticks.")
                         except ValueError:
-                            print("Invalid input! Please enter a valid number.")
+                            print("⚠️ Invalid input! Please enter a valid number.")
+                        input("Press Enter to continue")
                 else:
                     self.build.ram_count = None
-            case "5":
-                self.show_menu(self.db["psus"], "PSUS Choose")
-                self.get_user_choice("psu", self.db["psus"])
-            case "6":
-                self.show_menu(self.db["storages"], "Storage Choose")
-                self.get_user_choice("storage", self.db["storages"])
-            case "7":
-                self.show_menu(self.db["coolers"], "CPU Cooler Choose")
-                self.get_user_choice("cpu_cooler", self.db["coolers"])
-            case "8":
-                self.show_menu(self.db["cases"], "Case Choose")
-                self.get_user_choice("case", self.db["cases"])
 
             case "9":
                 errors = self.build.check_compatibility()
                 if not errors:
-                    print("\nGreat choice! Your build fully compatible!")
+                    print("\n✅ Great choice! Your build fully compatible!")
                 else:
-                    print("\nCompatibility issues found:")
+                    print("\n⚠️ Compatibility issues found:")
                     for error in errors:
-                        print(error)
+                        print(f"  ❌ {error}")
                 input("\nPress Enter to continue...")
             case "10":
                 if self.build.export_to_txt():
-                    print("\n[SUCCESS] Your build has been successfully saved to .txt file.")
+                    print("\n💾 [SUCCESS] Your build has been successfully saved to .txt file.")
                     input("\nPress Enter to continue...")
                 else:
-                    print("\n[ERROR] Cannot export! Your build still has compatibility errors. Fix them first.")
+                    print("\n❌ [ERROR] Cannot export! Your build still has compatibility errors. Fix them first.")
                     input("\nPress Enter to continue...")
             case "0":
-                print("\nGoodbye!")
+                print("\n👋 Goodbye!")
                 return False
             case _:
-                print("Invalid choice! Please enter an option from 0 to 7.")
+                print("⚠️ Invalid choice! Please enter an option from 0 to 10.")
                 input("\nPress Enter to continue...")
         return True
 
