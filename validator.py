@@ -10,10 +10,14 @@ class PCBuild:
         self.ram_count = None
         self.gpu = None
         self.psu = None
+        self.storage = None
+        self.cpu_cooler = None
+        self.case = None
+
 
     def calculate_total_price(self) -> float:
         total_price = 0
-        components = [self.cpu, self.motherboard, self.gpu, self.psu]
+        components = [self.cpu, self.motherboard, self.gpu, self.psu, self.storage, self.cpu_cooler, self.case]
         for item in components:
             if item:
                 total_price += float(item.price)
@@ -29,22 +33,27 @@ class PCBuild:
             "Processor (CPU)": self.cpu,
             "Motherboard": self.motherboard,
             "RAM": self.ram,
-            # "Graphics Card (GPU)": self.gpu,
-            "Power Supply (PSU)": self.psu
+            "Power Supply (PSU)": self.psu,
+            "Storage": self.storage,
+            "Case": self.case
         }
 
         for name, item in required_components.items():
             if not item:
                 errors.append(f"Warning! You haven't added a {name} to the current build!")
 
-        if self.cpu and not self.cpu.has_integrated_gpu and not self.gpu:
-            errors.append(f"No graphics output! Your GPU is missing "
-                          f"and the selected CPU does not have integrated graphics. "
-                          f"Please add GPU or change your CPU.")
-
         if errors:
             errors.append("Further compatibility checks are blocked until all components are selected.")
             return errors
+
+        if self.cpu and not self.cpu.integrated_gpu and not self.gpu:
+            errors.append(f"No graphics output! Your GPU is missing "
+                          f"and the selected CPU does not have integrated graphics. "
+                          f"Please add GPU or change your CPU.")
+        if self.cpu and not self.cpu.included_cooler and not self.cpu_cooler:
+            errors.append(f"No CPU cooler in current build! "
+                          f"and the selected CPU does not have included cooler. "
+                          f"Please add CPU cooler or change your CPU. ")
 
         if self.cpu and self.motherboard:
             if self.cpu.socket != self.motherboard.socket:
@@ -52,20 +61,40 @@ class PCBuild:
                     f"Incompatible sockets! The processor has {self.cpu.socket}, "
                     f"motherboard - {self.motherboard.socket}"
                 )
+        if self.cpu_cooler and self.motherboard:
+            if self.motherboard.socket not in self.cpu_cooler.sockets:
+                sockets_text = ", ".join(self.cpu_cooler.sockets)
+                errors.append(
+                    f"Cooler doesn't fit! The Motherboard has {self.motherboard.socket}, "
+                    f"cooler only works at - {sockets_text} sockets. "
+                )
+        # Compatibility to fit components in case
+        if self.case:
+            if self.motherboard:
+                if self.motherboard.form_factor not in self.case.supported_form_factors:
+                    errors.append("Motherboard form factor doesn't fit in chosen case! ")
+            if self.gpu:
+                if self.gpu.length > self.case.max_gpu_length:
+                    errors.append("Your GPU is too long to fit in chosen case! ")
+            if self.cpu_cooler:
+                if self.cpu_cooler.height > self.case.max_cpu_cooler_height:
+                    errors.append("Your CPU Cooler is too high to fit in chosen case! ")
         if self.psu:
             total_consumption = 0
-            for comp in [self.cpu, self.ram, self.motherboard, self.gpu]:
+            for comp in [self.cpu, self.motherboard, self.gpu, self.storage, self.cpu_cooler]:
                 if comp:
-                    if comp == self.ram and self.ram_count:
-                        total_consumption += comp.power * int(self.ram_count)
-                    else:
-                        total_consumption += comp.power
+                    total_consumption += comp.power
+            if self.ram and self.ram_count:
+                total_consumption += self.ram.power * int(self.ram_count)
+
             recommended_power = total_consumption * 1.2
+
             if self.psu.power < recommended_power:
                 errors.append(
                     f"Weak power supply unit! Your system consumes approx {total_consumption}W, "
                     f"recommended power is {int(recommended_power)}W, chosen PSU has only {self.psu.power}W."
                 )
+
         if self.ram and self.motherboard:
             if self.ram.ram_type != self.motherboard.ram_type:
                 errors.append(f"Memory types for RAM and motherboard do not match. "
@@ -89,7 +118,10 @@ class PCBuild:
             file.write(f"• RAM: {self.ram.name} x{self.ram_count}\n")
             file.write(f"• GPU: {self.gpu.name if self.gpu else 'Integrated Graphics'}\n")
             file.write(f"• Power Supply: {self.psu.name}\n")
+            file.write(f"• Storage: {self.storage.name}\n")
+            file.write(f"• CPU Cooler: {self.cpu_cooler.name}\n")
+            file.write(f"• Case: {self.case.name}\n")
             file.write("----------------------------------------\n")
-            file.write(f"TOTAL PRICE: {self.calculate_total_price()}\n")
+            file.write(f"TOTAL PRICE: {self.calculate_total_price()}$\n")
             file.write("========================================\n")
         return True
